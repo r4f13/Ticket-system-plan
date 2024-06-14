@@ -2,14 +2,14 @@
 
 ## Database Schema
 ![](dbschema.png)
-```
+```ts
 enum Role{
   CUSTOMER,
   AGENT,
   ADMIN
 }
 ```
-```
+```ts
 enum Status{
   UNASSIGNED, 
   WAITING,
@@ -29,7 +29,7 @@ enum Status{
 ### 1. Auth
 #### 1. POST auth/register
 **BODY(non-admin)**
-```
+```ts
 {
   username: string,
   password: string
@@ -38,7 +38,7 @@ enum Status{
 > User role is "CUSTOMER" by default
 
 **BODY(admin)**
-```
+```ts
 {
   username: string,
   password: string,
@@ -48,7 +48,7 @@ enum Status{
 > Admin can set the user role
 
 **RESPONSE**
-```
+```ts
 //if username & password is valid
 {
   access_token: string
@@ -56,14 +56,14 @@ enum Status{
 ```
 #### 2. POST auth/login
 **BODY**
-```
+```ts
 {
   username: string,
   password: string
 }
 ```
 **RESPONSE**
-```
+```ts
 //if username & password is correct
 {
   access_token: string
@@ -87,14 +87,14 @@ Return all agent
 
 #### 1. GET ticket
 **QUERY**
-```
+```url
 ticket? 
   creatorId = number & 
   status = Status
 ```
 
 **ROLE BASED RESPONSE**
-```
+```ts
 if(user.role=="ADMIN"){
   return //get all tickets (+query filter)
 }
@@ -111,7 +111,7 @@ else{
 
 #### 2. GET ticket/:id
 **RESPONSE**
-```
+```ts
 //if user.role=="ADMIN" || user.id==ticket.requesterId || user.id==ticket.agentId
 {
   subject: string,
@@ -128,14 +128,14 @@ else{
 
 #### 3. POST ticket
 **BODY (Non-admin)**
-```
+```ts
 {
   subject: string,
   description: string
 }
 ```
 **CREATION**
-```
+```ts
 {
   subject = body.subject,
   description = body.description,
@@ -147,7 +147,7 @@ else{
 
 
 **BODY (Admin)**
-```
+```ts
 {
   subject: string,
   description: string,
@@ -155,7 +155,7 @@ else{
 }
 ```
 **CREATION**
-```
+```ts
 {
   subject = body.subject,
   description = body.description,
@@ -166,15 +166,16 @@ else{
 
 #### 4. PATCH ticket/:id
 BODY:
-```
+```ts
+{
   title?: string, //ADMIN & REQUESTER ONLY
   description?: string, //ADMIN & REQUESTER ONLY
   status?: Status, //ADMIN & ASSIGNED AGENT ONLY
   agentId?: number, //ADMIN ONLY
-  
+}
 ```
 UPDATE:
-```
+```ts
 //ticket=getTicketById(param.id)
 //if user.role=="ADMIN" || ticket.requesterId
 //update where ticket.id=param.id
@@ -188,13 +189,13 @@ UPDATE:
 ### 4. Comment
 #### 1. POST comment/:ticketId
 **BODY**
-```
+```ts
 {
   message: string
 }
 ```
 **CREATION**
-```
+```ts
 //ticket=getTicketById(param.ticketId)
 //if user.id==ticket.requesterId || user.id==ticket.agentId
 {
@@ -207,7 +208,7 @@ UPDATE:
 ```
 
 #### 2. DELETE comment/:commentId
-```
+```ts
 comment=getCommentById(param.commentId)
 if (user.role=="ADMIN" && user.id==comment.senderId){
   //Comment deleted
