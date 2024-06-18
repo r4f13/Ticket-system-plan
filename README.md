@@ -1,7 +1,7 @@
 # Ticketing System
 
 ## Database Schema
-![](dbschema.png)
+![](databaseSchema.png)
 **Status**
 | Name      | Description |
 | ----------- | ----------- |
