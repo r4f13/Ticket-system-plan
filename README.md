@@ -2,22 +2,25 @@
 
 ## Database Schema
 ![](dbschema.png)
-```ts
-enum Role{
-  CUSTOMER,
-  AGENT,
-  ADMIN
-}
-```
-```ts
-enum Status{
-  UNASSIGNED, 
-  WAITING,
-  ONPROGRESS,
-  RESOLVED,
-  CANCELLED
-}
-```
+**Status**
+| Name      | Description |
+| ----------- | ----------- |
+| Unassigned      | - |
+| Waiting   | - |
+| On Progress   | - |
+| Resolved   | - |
+| Cancelled   | - |
+| Overdue | - |
+
+**Priority**
+| Name      | Description | ExpiredAt(optional) |
+| ----------- | ----------- | - |
+| Low      | - | none |
+| Medium   | - | none |
+| High   | - | none |
+| Same hour | - | (minute 59 of the same hour) |
+| Same Day   | - | (23:59 of the same day) |
+| Same week   | - | (same hour in the next week) |
 
 ## Module
 1. Auth: Berkaitan dengan autentikasi user seperti login dan register
@@ -90,11 +93,14 @@ Return all agent
 ```url
 ticket? 
   creatorId = number & 
-  status = Status
+  status = Status & 
+  priority = Priority
 ```
 
 **ROLE BASED RESPONSE**
 ```ts
+//Result is automatically sorted based on the expiration date and priority
+
 if(user.role=="ADMIN"){
   return //get all tickets (+query filter)
 }
@@ -120,7 +126,8 @@ else{
   comment: [{
     senderId: number, 
     message: string
-  }]
+  }],
+ ...
 }
 
 //else -> Unauthorized
@@ -131,7 +138,9 @@ else{
 ```ts
 {
   subject: string,
-  description: string
+  description: string,
+  priority: Priority, 
+  expiredAt?: timestamp //Default: priority default expiration date if exist
 }
 ```
 **CREATION**
@@ -151,7 +160,11 @@ else{
 {
   subject: string,
   description: string,
-  agentId: number
+  agentId: number,
+  priority: Priority,
+  status?: Status,
+  expiredAt?: timestamp //Default: priority default expiration date if exist
+  ...
 }
 ```
 **CREATION**
@@ -159,7 +172,9 @@ else{
 {
   subject = body.subject,
   description = body.description,
-  agentId = body.agentId
+  agentId = body.agentId,
+  priority: body.priority,
+  status = body.status
   ... 
 }
 ```
@@ -172,6 +187,7 @@ BODY:
   description?: string, //ADMIN & REQUESTER ONLY
   status?: Status, //ADMIN & ASSIGNED AGENT ONLY
   agentId?: number, //ADMIN ONLY
+  priority: Priority //Available to all
 }
 ```
 UPDATE:
