@@ -34,7 +34,7 @@ enum Role{
 {
   username: string,
   password: string,
-  role?: Role //"CUSTOMER" by default, only admin can change
+  role?: Role //Only ADMIN can change, Default: "CUSTOMER"
 }
 ```
 ### POST auth/login
@@ -47,6 +47,13 @@ enum Role{
 
 ## ticket  (🔒LOGIN REQUIRED)
 ### GET ticket
+```url
+ticket?
+  sort= newest | priority | expiration &
+  subject=string &
+  description=string &
+  ... //User can input any available column inside the ticket table
+```
 - If user is ADMIN, return all ticket
 - If user is AGENT, return all assigned ticket
 - If user is CUSTOMER, return all requested ticket
@@ -67,15 +74,19 @@ enum Role{
 {
   subject?: string, //ADMIN & requester ONLY
   description?: string, //ADMIN & requester ONLY
-  priorityId?: number, //ADMIN & requester only
-  agentId?:number, //ADMIN & requester ONLY
+  priorityId?: number, //ADMIN only
+  agentId?:number, //ADMIN ONLY
   statusId?: number, //ADMIN & assigned agent  ONLY
-  expiredAt?: timestamp //ADMIN & requester ONLY
+  expiredAt?: timestamp //ADMIN ONLY
 }
 ```
 ### DELETE ticket/:id
 ### GET ticket/:ticketId/assign/:agentId
 Automatically update the ticket agentId and change it's status to "waiting"
+### GET ticket/:ticketId/update/:statusId
+> ADMIN and assigned agent only
+
+Update a ticket's status
 
 ## comment (🔒LOGIN REQUIRED)
 ### GET comment/:id
@@ -98,12 +109,16 @@ Return all comment inside a ticket
 
 
 ## user (🔒LOGIN REQUIRED)
+### GET user/self
+Return logged user info
 ### GET user
 > ADMIN only
 
 Return all user
-### GET user/self
-Return logged user info
+### GET user/:role
+> ADMIN only
+
+Return all user by role
 ### GET use/:userId/promote/:newRole
 > ADMIN only
 
