@@ -1,5 +1,5 @@
 # Structure
-# Role
+## Role
 ```
 enum Role{
   ADMIN
@@ -57,3 +57,36 @@ enum Role{
 ```
 ### DELETE ticket/:id
 ### GET ticket/:ticketId/assign/:agentId
+Automatically update the ticket agentId and change it's status to "waiting"
+
+## comment (🔒LOGIN REQUIRED)
+### GET comment/:id
+> ADMIN and comment sender only
+
+Return a comment and it's property
+### GET comment/ticket/:ticketId
+> ADMIN, ticket requester, and assigned agent only
+
+Return all comment inside a ticket
+### POST comment/ticket/:ticketId
+```ts
+{
+  message: string
+}
+
+```
+### DELETE comment/:id
+> ADMIN and comment sender only
+
+
+## user (🔒LOGIN REQUIRED)
+### GET user
+> ADMIN only
+
+Return all user
+### GET user/self
+Return logged user info
+### GET use/:userId/promote/:newRole
+> ADMIN only
+
+Update a user's role to newRole
