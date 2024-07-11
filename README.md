@@ -1,13 +1,13 @@
 # Structure
 ## Priority
-| id| name | description | expiresIn |
-|-|-|-|-|
-| 1 | Low |-|-|
-| 2 | Medium |-|-|
-| 3 | High |-|-|
-| 4 | One hour |-| 3600000 |
-| 5 | One day |-| 86400000 |
-| 6 | one week |-| 604800000 |
+| id| name | description | expiresIn | priorityIndex|
+|-|-|-|-|-|
+| 1 | Low |-|-|1|
+| 2 | Medium |-|-|2|
+| 3 | High |-|-|3|
+| 4 | One hour |-| 3600000 |6|
+| 5 | One day |-| 86400000 |5|
+| 6 | one week |-| 604800000 |4|
 ## Status
 | id| name | description | 
 |-|-|-|
@@ -52,7 +52,7 @@ ticket?
   sort= newest | priority | expiration &
   subject=string &
   description=string &
-  ... //User can input any available column inside the ticket table
+  ... //User can input any available column inside the ticket table to filter it
 ```
 - If user is ADMIN, return all ticket
 - If user is AGENT, return all assigned ticket
