@@ -1,4 +1,22 @@
 # Structure
+## Priority
+| id| name | description | expiresIn |
+|-|-|-|-|
+| 1 | Low |-|-|
+| 2 | Medium |-|-|
+| 3 | High |-|-|
+| 4 | One hour |-| 3600000 |
+| 5 | One day |-| 86400000 |
+| 6 | one week |-| 604800000 |
+## Status
+| id| name | description | 
+|-|-|-|
+| 1 | Unassigned |-|
+| 2 | Waiting |-|
+| 3 | On progress |-|
+| 4 | Resolved |-|
+| 5 | Cancelled |-|
+| 6 | Overdue |-|
 ## Role
 ```
 enum Role{
