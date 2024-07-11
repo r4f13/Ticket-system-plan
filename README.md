@@ -1,4 +1,6 @@
 # Structure
+## Database schema
+![](newSchema.png)
 ## Priority
 | id| name | description | expiresIn | priorityIndex|
 |-|-|-|-|-|
